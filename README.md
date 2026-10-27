@@ -1,10 +1,10 @@
 <p align="center">
-  <a href="https://github.com/axolotl-pm/pmmp-plugin-actions/actions"><img alt="pmmp-plugin-actions status" src="https://github.com/axolotl-pm/pmmp-plugin-actions/actions/workflows/main.yml/badge.svg"></a>
+  <a href="https://github.com/CosmicMC-PMMP/pmmp-plugin-actions/actions"><img alt="pmmp-plugin-actions status" src="https://github.com/CosmicMC-PMMP/pmmp-plugin-actions/actions/workflows/main.yml/badge.svg"></a>
 </p>
 
 # pmmp-plugin-actions
 
-GitHub Actions utilities for building and releasing [PocketMine-MP](https://github.com/pmmp/PocketMine-MP) plugins.
+GitHub Actions utilities for building and releasing [PocketMine-MP](https://github.com/CosmicMC-PMMP/PocketMine-MP) plugins.
 
 This collection provides reusable workflows and composite actions to build plugin phars, validate release tags, and publish releases or nightly builds.
 
@@ -32,7 +32,7 @@ on:
 
 jobs:
   build:
-    uses: axolotl-pm/pmmp-plugin-actions/.github/workflows/build-phar.yml@v1.0.0
+    uses: CosmicMC-PMMP/pmmp-plugin-actions/.github/workflows/build-phar.yml@v1.0.0
     with:
       php-version: '8.2'
       stage-poggit: true
@@ -46,7 +46,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - uses: axolotl-pm/pmmp-plugin-actions/publish-nightly@v1.0.0
+      - uses: CosmicMC-PMMP/pmmp-plugin-actions/publish-nightly@v1.0.0
         with:
           artifact-id:    ${{ needs.build.outputs.artifact-id }}
           plugin-name:    ${{ needs.build.outputs.plugin-name }}
@@ -74,11 +74,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: axolotl-pm/pmmp-plugin-actions/validate-release@v1.0.0
+      - uses: CosmicMC-PMMP/pmmp-plugin-actions/validate-release@v1.0.0
 
   build:
     needs: validate
-    uses: axolotl-pm/pmmp-plugin-actions/.github/workflows/build-phar.yml@v1.0.0
+    uses: CosmicMC-PMMP/pmmp-plugin-actions/.github/workflows/build-phar.yml@v1.0.0
     with:
       php-version: '8.2'
       attest: true
@@ -93,7 +93,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: axolotl-pm/pmmp-plugin-actions/publish-release@v1.0.0
+      - uses: CosmicMC-PMMP/pmmp-plugin-actions/publish-release@v1.0.0
         with:
           artifact-id: ${{ needs.build.outputs.artifact-id }}
           plugin-name: ${{ needs.build.outputs.plugin-name }}
@@ -110,26 +110,26 @@ First, install the [GitHub CLI](https://cli.github.com/) if you haven't already,
 ```bash
 gh attestation verify Plugin.phar \
   --repo owner/PluginRepo \
-  --signer-workflow axolotl-pm/pmmp-plugin-actions/.github/workflows/build-phar.yml
+  --signer-workflow CosmicMC-PMMP/pmmp-plugin-actions/.github/workflows/build-phar.yml
 ```
 
 **Windows (PowerShell)**
 ```powershell
 gh attestation verify Plugin.phar `
   --repo owner/PluginRepo `
-  --signer-workflow axolotl-pm/pmmp-plugin-actions/.github/workflows/build-phar.yml
+  --signer-workflow CosmicMC-PMMP/pmmp-plugin-actions/.github/workflows/build-phar.yml
 ```
 
 **Windows (CMD)**
 ```bat
 gh attestation verify Plugin.phar ^
   --repo owner/PluginRepo ^
-  --signer-workflow axolotl-pm/pmmp-plugin-actions/.github/workflows/build-phar.yml
+  --signer-workflow CosmicMC-PMMP/pmmp-plugin-actions/.github/workflows/build-phar.yml
 ```
 
 A successful verification confirms:
 - The phar was built from some commit in `owner/PluginRepo`
-- The build ran exclusively through `axolotl-pm/pmmp-plugin-actions/.github/workflows/build-phar.yml`
+- The build ran exclusively through `CosmicMC-PMMP/pmmp-plugin-actions/.github/workflows/build-phar.yml`
 - The file has not been modified after the build
 
 To additionally pin verification to a specific commit or ref, use `--source-digest` or `--source-ref`.
@@ -148,7 +148,7 @@ Set up PHP, build and compress a PocketMine-MP plugin phar, upload it as a workf
 
 | Name | Required | Default | Description |
 |:-----|:--------:|:--------|:------------|
-| `php-version` | YES | — | Any version available in [`pmmp/PHP-Binaries`](https://github.com/pmmp/PHP-Binaries) (e.g. `8.2`, `8.3`) |
+| `php-version` | YES | — | Any version available in [`CosmicMC-PMMP/PHP-Binaries`](https://github.com/CosmicMC-PMMP/PHP-Binaries) (e.g. `8.2`, `8.3`) |
 | `composer` | NO | `true` | Whether to run `composer install` and include dependencies in the phar. Set to `false` if your plugin has no `composer.json`. |
 | `attest` | NO | `false` | Generate a SLSA build provenance attestation for the phar. When `true`, the calling job must grant `id-token: write` and `attestations: write` (see [Permissions](#permissions) below). |
 | `retention-days` | NO | `1` | Days to retain the uploaded artifact |
